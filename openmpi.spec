@@ -18,7 +18,7 @@ BuildRequires:      hwloc-gui
 BuildRequires:      perl-generators, perl(Getopt::Long)
 BuildRequires:      python2-devel, python3-devel
 %ifarch x86_64
-BuildRequires:      infinipath-psm-devel, libpsm2-devel, torque-devel, zlib-devel
+BuildRequires:      infinipath-psm-devel, libpsm2-devel zlib-devel
 %endif
 
 Provides:           mpi, %{name}-java
