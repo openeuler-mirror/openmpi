@@ -1,6 +1,6 @@
 Name:           openmpi
 Version:        2.1.1
-Release:        15
+Release:        16
 Summary:        Open Source High Performance Computing
 License:        BSD and MIT and Romio
 URL:            http://www.open-mpi.org/
@@ -14,11 +14,11 @@ BuildRequires:      gcc-c++, gcc-gfortran
 BuildRequires:      valgrind-devel, hwloc-devel, java-devel, libfabric-devel, papi-devel
 BuildRequires:      libibverbs-devel >= 1.1.3, opensm-devel > 3.3.0
 BuildRequires:      librdmacm-devel, rdma-core-devel, pmix-devel
-BuildRequires:      hwloc-gui, rpm-mpi-hooks
+BuildRequires:      hwloc-gui
 BuildRequires:      perl-generators, perl(Getopt::Long)
 BuildRequires:      python2-devel, python3-devel
 %ifarch x86_64
-BuildRequires:      infinipath-psm-devel, libpsm2-devel, torque-devel, zlib-devel
+BuildRequires:      infinipath-psm-devel, libpsm2-devel zlib-devel
 %endif
 
 Provides:           mpi, %{name}-java
@@ -210,5 +210,8 @@ make check
 %{_mandir}/%{name_all}/man*/*
 
 %changelog
+* Sat Jun 20 2020 Senlin Xia <xiasenlin1@huawei.com> - 2.1.1-16
+- remove unnecessary buildrequire: rpm-mpi-hooks
+
 * Tue Nov 26 2019 openEuler Buildteam <buildteam@openeuler.org> - 2-1.1-15
 - Package init
