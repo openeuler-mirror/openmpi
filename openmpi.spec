@@ -1,6 +1,6 @@
 Name:           openmpi
 Version:        2.1.1
-Release:        16
+Release:        17
 Summary:        Open Source High Performance Computing
 License:        BSD and MIT and Romio
 URL:            http://www.open-mpi.org/
@@ -46,7 +46,7 @@ community in order to build the best MPI library available.
 Summary:    Development files for openmpi
 Requires:   %{name} = %{version}-%{release}, gcc-gfortran
 Provides:   mpi-devel
-Requires:   rpm-mpi-hooks, java-devel
+Requires:   java-devel
 Provides:   %{name}-java-devel
 Obsoletes:  %{name}-java-devel
 
@@ -210,6 +210,9 @@ make check
 %{_mandir}/%{name_all}/man*/*
 
 %changelog
+* Thu Sep 10 2020 Guoshuai Sun <sunguoshuai@huawei.com> - 2.1.1-17
+- As rpm-mpi-hooks is not in buildrequire,we shouldn't pull it in devel packages
+
 * Sat Jun 20 2020 Senlin Xia <xiasenlin1@huawei.com> - 2.1.1-16
 - remove unnecessary buildrequire: rpm-mpi-hooks
 
