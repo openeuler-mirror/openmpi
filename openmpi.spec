@@ -1,14 +1,13 @@
 Name:           openmpi
 Version:        2.1.1
-Release:        17
+Release:        18
 Summary:        Open Source High Performance Computing
 License:        BSD and MIT and Romio
 URL:            http://www.open-mpi.org/
 Source0:        https://download.open-mpi.org/release/open-mpi/v2.1/openmpi-%{version}.tar.bz2
 Source1:        openmpi.module.in
-Source2:        openmpi.pth.py2
-Source3:        openmpi.pth.py3
-Source4:        macros.openmpi
+Source2:        openmpi.pth.py3
+Source3:        macros.openmpi
 
 BuildRequires:      gcc-c++, gcc-gfortran
 BuildRequires:      valgrind-devel, hwloc-devel, java-devel, libfabric-devel, papi-devel
@@ -16,7 +15,7 @@ BuildRequires:      libibverbs-devel >= 1.1.3, opensm-devel > 3.3.0
 BuildRequires:      librdmacm-devel, rdma-core-devel, pmix-devel
 BuildRequires:      hwloc-gui
 BuildRequires:      perl-generators, perl(Getopt::Long)
-BuildRequires:      python2-devel, python3-devel
+BuildRequires:      python3-devel
 %ifarch x86_64
 BuildRequires:      infinipath-psm-devel, libpsm2-devel zlib-devel
 %endif
@@ -52,13 +51,6 @@ Obsoletes:  %{name}-java-devel
 
 %description devel
 This contains dynamic libraries and header files for the developing of openmpi.
-
-%package -n python2-openmpi
-Summary:    openmpi python2 interface
-Requires:   %{name} = %{version}-%{release}
-
-%description -n python2-openmpi
-openmpi python2 interface.
 
 %package -n python3-openmpi
 Summary:    openmpi python3 interface
@@ -112,14 +104,13 @@ sed 's#@LIBDIR@#%{_libdir}/%{name}#;
      s#@FMODDIR@#%{_fmoddir}/%{name}#;
      s#@INCDIR@#%{_includedir}/%{name_all}#;
      s#@MANDIR@#%{_mandir}/%{name_all}#;
-     s#@PY2SITEARCH@#%{python2_sitearch}/%{name}#;
      s#@PY3SITEARCH@#%{python3_sitearch}/%{name}#;
      s#@COMPILER@#openmpi-%{_arch}#;
      s#@SUFFIX@#_openmpi#' \
      <%{SOURCE1} \
      >%{buildroot}%{_datadir}/modulefiles/mpi/%{name_all}
 
-install -Dpm 644 %{SOURCE4} %{buildroot}/%{rpmmacrodir}/macros.%{name_all}
+install -Dpm 644 %{SOURCE3} %{buildroot}/%{rpmmacrodir}/macros.%{name_all}
 
 install -d %{buildroot}%{_fmoddir}/%{name}
 for mod in %{buildroot}%{_libdir}/%{name}/lib/*.mod
@@ -136,10 +127,8 @@ popd
 sed -i -e s/-ldl// -e s/-lhwloc// \
   %{buildroot}%{_libdir}/%{name}/share/%{name}/*-wrapper-data.txt
 
-install -d %{buildroot}/%{python2_sitearch}/%{name}
 install -d %{buildroot}/%{python3_sitearch}/%{name}
-install -pDm0644 %{SOURCE2} %{buildroot}/%{python2_sitearch}/openmpi.pth
-install -pDm0644 %{SOURCE3} %{buildroot}/%{python3_sitearch}/openmpi.pth
+install -pDm0644 %{SOURCE2} %{buildroot}/%{python3_sitearch}/openmpi.pth
 
 %check
 make check
@@ -197,19 +186,17 @@ make check
 %{_fmoddir}/%{name}/
 %{rpmmacrodir}/macros.%{name_all}
 
-%files -n python2-openmpi
-%dir %{python2_sitearch}/%{name}
-%{python2_sitearch}/openmpi.pth
-
 %files -n python3-openmpi
 %dir %{python3_sitearch}/%{name}
 %{python3_sitearch}/openmpi.pth
-
 
 %files help
 %{_mandir}/%{name_all}/man*/*
 
 %changelog
+* Wed Oct 21 2020 wangxiao <wangxiao65@huawei.com> - 2.1.1-18
+- drop python2 subpackage
+
 * Thu Sep 10 2020 Guoshuai Sun <sunguoshuai@huawei.com> - 2.1.1-17
 - As rpm-mpi-hooks is not in buildrequire,we shouldn't pull it in devel packages
 
