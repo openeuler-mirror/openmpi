@@ -1,6 +1,6 @@
 Name:           openmpi
 Version:        2.1.1
-Release:        18
+Release:        19
 Summary:        Open Source High Performance Computing
 License:        BSD and MIT and Romio
 URL:            http://www.open-mpi.org/
@@ -194,6 +194,9 @@ make check
 %{_mandir}/%{name_all}/man*/*
 
 %changelog
+* Mon Nov 2 2020 wangxiao <wangxiao65@huawei.com> - 2.1.1-19
+- delete unnessary file
+
 * Wed Oct 21 2020 wangxiao <wangxiao65@huawei.com> - 2.1.1-18
 - drop python2 subpackage
 
