@@ -1,6 +1,6 @@
 Name:           openmpi
 Version:        2.1.1
-Release:        17
+Release:        18
 Summary:        Open Source High Performance Computing
 License:        BSD and MIT and Romio
 URL:            http://www.open-mpi.org/
@@ -26,6 +26,7 @@ Requires:           environment(modules), openssh-clients
 Provides:           bundled(libevent) = 2.0.22
 Requires:           java-headless
 Obsoletes:          %{name}-java
+Recommends:	    %{name}-help = %{version}-%{release}
 
 %description
 The Open MPI Project is an open source Message Passing Interface
@@ -210,6 +211,9 @@ make check
 %{_mandir}/%{name_all}/man*/*
 
 %changelog
+* Mon Dec 07 2020 liuweibo  <liuweibo10@huawei.com> - 2.1.1-18
+- Add help package requires to Main
+
 * Thu Sep 10 2020 Guoshuai Sun <sunguoshuai@huawei.com> - 2.1.1-17
 - As rpm-mpi-hooks is not in buildrequire,we shouldn't pull it in devel packages
 
