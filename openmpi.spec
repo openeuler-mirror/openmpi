@@ -1,6 +1,6 @@
 Name:           openmpi
 Version:        2.1.1
-Release:        19
+Release:        20
 Summary:        Open Source High Performance Computing
 License:        BSD and MIT and Romio
 URL:            http://www.open-mpi.org/
@@ -13,7 +13,7 @@ BuildRequires:      gcc-c++, gcc-gfortran
 BuildRequires:      valgrind-devel, hwloc-devel, java-devel, libfabric-devel, papi-devel
 BuildRequires:      libibverbs-devel >= 1.1.3, opensm-devel > 3.3.0
 BuildRequires:      librdmacm-devel, rdma-core-devel, pmix-devel
-BuildRequires:      hwloc-gui
+BuildRequires:      hwloc-gui chrpath
 BuildRequires:      perl-generators, perl(Getopt::Long)
 BuildRequires:      python3-devel
 %ifarch x86_64
@@ -86,7 +86,8 @@ This contains man files for the using of openmpi.
             CFLAGS="$RPM_OPT_FLAGS" \
             CXXFLAGS="$RPM_OPT_FLAGS" \
             FC=gfortran \
-            FCFLAGS="$RPM_OPT_FLAGS"
+            FCFLAGS="$RPM_OPT_FLAGS" \
+	    LDFLAGS="-Wl,-z,now"
 
 %make_build
 
@@ -129,6 +130,21 @@ sed -i -e s/-ldl// -e s/-lhwloc// \
 
 install -d %{buildroot}/%{python3_sitearch}/%{name}
 install -pDm0644 %{SOURCE2} %{buildroot}/%{python3_sitearch}/openmpi.pth
+file `find %{buildroot}%{_libdir}/openmpi/bin  -type f` | grep -w ELF | awk -F : '{print $1}' |xargs chrpath -d
+
+file `find %{buildroot}%{_libdir}/openmpi/lib  -type f` | grep -w ELF | awk -F : '{print $1}' |xargs chrpath -d
+
+mkdir -p %{buildroot}/etc/ld.so.conf.d
+echo "%{_libdir}/openmpi/lib" > %{buildroot}/etc/ld.so.conf.d/%{name}-%{_arch}.conf
+
+
+%post
+/sbin/ldconfig
+
+%postun
+/sbin/ldconfig
+
+
 
 %check
 make check
@@ -145,6 +161,7 @@ make check
 %dir %{_libdir}/%{name}/share
 %dir %{_libdir}/%{name}/share/openmpi
 %config(noreplace) %{_sysconfdir}/%{name_all}/*
+%config(noreplace) /etc/ld.so.conf.d/*
 %{_datadir}/modulefiles/mpi/
 %{_libdir}/%{name}/bin/mpiexec
 %{_libdir}/%{name}/bin/mpirun
@@ -194,6 +211,9 @@ make check
 %{_mandir}/%{name_all}/man*/*
 
 %changelog
+* Thu Sep 9 2021 Pengju Jiang <jiangpengju2@huawei.com> - 2.1.1-20
+- solve the strip and rpath problem of safe conversion
+
 * Mon Nov 2 2020 wangxiao <wangxiao65@huawei.com> - 2.1.1-19
 - delete unnessary file
 
