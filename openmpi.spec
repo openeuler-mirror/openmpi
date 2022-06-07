@@ -1,6 +1,6 @@
 Name:           openmpi
 Version:        4.1.4
-Release:        2
+Release:        3
 Summary:        Open Source High Performance Computing
 License:        BSD-3-Clause
 URL:            http://www.open-mpi.org/
@@ -8,6 +8,7 @@ Source0:        https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-%{ve
 Source1:        openmpi.module.in
 Source2:        openmpi.pth.py3
 Source3:        macros.openmpi
+Patch01:        riscv.patch
 
 BuildRequires:      gcc-c++, gcc-gfortran
 BuildRequires:      valgrind-devel, hwloc-devel, java-devel, libfabric-devel, papi-devel
@@ -18,6 +19,9 @@ BuildRequires:      perl-generators, perl(Getopt::Long)
 BuildRequires:      python3-devel libevent-devel
 %ifarch x86_64
 BuildRequires:      infinipath-psm-devel, libpsm2-devel zlib-devel
+%endif
+%ifarch riscv64
+BuildRequires:      automake libtool
 %endif
 
 Provides:           mpi, %{name}-java
@@ -36,6 +40,8 @@ community in order to build the best MPI library available.
 
 %ifarch aarch64
 %global name_all openmpi-aarch64
+%elifarch riscv64
+%global name_all openmpi-riscv64
 %else
 %global name_all openmpi-x86_64
 %endif
@@ -68,6 +74,9 @@ This contains man files for the using of openmpi.
 
 %prep
 %autosetup -n openmpi-%{version} -p1
+%ifarch riscv64
+./autogen.pl --force
+%endif
 
 %build
 ./configure --prefix=%{_libdir}/%{name} \
@@ -208,6 +217,9 @@ make check
 %{_mandir}/%{name_all}/man*/*
 
 %changelog
+* Fri Aug 12 2022 lvxiaoqian <xiaoqian@nj.iscas.ac.cn> - 4.1.4-3
+- add riscv support
+
 * Fri Jul 29 2022 wangkai <wangkai385@h-partners.com> - 4.1.4-2
 - Reslove conflict with pmix-devel and update license
 

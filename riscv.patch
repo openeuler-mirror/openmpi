@@ -1,0 +1,38 @@
+--- a/config/opal_config_asm.m4	2022-05-26 22:32:35.000000000 +0800
++++ b/config/opal_config_asm.m4	2022-06-07 09:53:01.856805800 +0800
+@@ -1149,6 +1149,11 @@
+             fi
+ 
+             ;;
++        riscv64*)
++            opal_cv_asm_arch="RISCV64"
++            OPAL_ASM_SUPPORT_64BIT=1
++            OPAL_GCC_INLINE_ASSIGN='"li %0, 0" : "=&r"(ret)'
++            ;;
+         # There is no current difference between s390 and s390x
+         # But use two different defines in case some come later
+         # as s390 is 31bits while s390x is 64bits
+--- a/opal/include/opal/sys/architecture.h	2022-05-26 22:32:35.000000000 +0800
++++ b/opal/include/opal/sys/architecture.h	2022-06-07 09:55:07.297388600 +0800
+@@ -44,6 +44,7 @@
+ #define OPAL_ARM64          0101
+ #define OPAL_S390           0110
+ #define OPAL_S390X          0111
++#define OPAL_RISCV64        0120
+ #define OPAL_BUILTIN_SYNC   0200
+ #define OPAL_BUILTIN_GCC    0202
+ #define OPAL_BUILTIN_NO     0203
+--- a/opal/include/opal/sys/cma.h	2022-05-26 22:32:35.000000000 +0800
++++ b/opal/include/opal/sys/cma.h	2022-06-07 09:59:28.145428400 +0800
+@@ -92,6 +92,11 @@
+ #define __NR_process_vm_readv	340
+ #define __NR_process_vm_writev	341
+ 
++#elif OPAL_ASSEMBLY_ARCH == OPAL_RISCV64
++/* RISCV64 uses the asm-generic syscall numbers */
++#define __NR_process_vm_readv 270
++#define __NR_process_vm_writev 271
++
+ #else
+ #error "Unsupported architecture for process_vm_readv and process_vm_writev syscalls"
+ #endif
