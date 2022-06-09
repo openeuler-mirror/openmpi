@@ -1,6 +1,6 @@
 Name:           openmpi
-Version:        2.1.1
-Release:        20
+Version:        2.1.6
+Release:        1
 Summary:        Open Source High Performance Computing
 License:        BSD and MIT and Romio
 URL:            http://www.open-mpi.org/
@@ -16,6 +16,7 @@ BuildRequires:      librdmacm-devel, rdma-core-devel, pmix-devel
 BuildRequires:      hwloc-gui chrpath
 BuildRequires:      perl-generators, perl(Getopt::Long)
 BuildRequires:      python3-devel
+BuildRequires:      flex
 %ifarch x86_64
 BuildRequires:      infinipath-psm-devel, libpsm2-devel zlib-devel
 %endif
@@ -36,8 +37,12 @@ community in order to build the best MPI library available.
 
 %ifarch aarch64
 %global name_all openmpi-aarch64
-%else
+%endif
+%ifarch x86_64
 %global name_all openmpi-x86_64
+%endif
+%ifarch riscv64
+%global name_all openmpi-riscv64
 %endif
 #%global namearch openmpi-%{_arch}
 
@@ -211,6 +216,9 @@ make check
 %{_mandir}/%{name_all}/man*/*
 
 %changelog
+* Tuw Jun 7 2022 Jingwiw Jingwiw <wangjingwei@iscas.ac.cn> - 2.1.6-1
+- update to 2.1.6 for riscv
+
 * Thu Sep 9 2021 Pengju Jiang <jiangpengju2@huawei.com> - 2.1.1-20
 - solve the strip and rpath problem of safe conversion
 
