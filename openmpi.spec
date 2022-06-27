@@ -1,6 +1,6 @@
 Name:           openmpi
-Version:        2.1.1
-Release:        20
+Version:        4.1.4
+Release:        1
 Summary:        Open Source High Performance Computing
 License:        BSD and MIT and Romio
 URL:            http://www.open-mpi.org/
@@ -169,9 +169,6 @@ make check
 %{_libdir}/%{name}/bin/orte-*
 %{_libdir}/%{name}/bin/orted
 %{_libdir}/%{name}/bin/orterun
-%{_libdir}/%{name}/bin/oshmem_info
-%{_libdir}/%{name}/bin/oshrun
-%{_libdir}/%{name}/bin/shmemrun
 %{_libdir}/%{name}/lib/*.so.*
 %{_libdir}/%{name}/lib/openmpi/*
 %{_libdir}/%{name}/lib/mpi.jar
@@ -189,16 +186,16 @@ make check
 %{_libdir}/%{name}/bin/mpif*
 %{_libdir}/%{name}/bin/opal*
 %{_libdir}/%{name}/bin/ortecc
-%{_libdir}/%{name}/bin/oshcc
-%{_libdir}/%{name}/bin/oshfort
-%{_libdir}/%{name}/bin/shmemcc
-%{_libdir}/%{name}/bin/shmemfort
+%{_libdir}/%{name}/bin/aggregate_profile.pl
+%{_libdir}/%{name}/bin/profile2mat.pl
 %{_libdir}/%{name}/bin/mpijava*
 %{_libdir}/%{name}/lib/*.so
 %{_libdir}/%{name}/lib/*.mod
 %{_libdir}/%{name}/lib/pkgconfig/
+%{_libdir}/%{name}/lib/pmix/
 %{_libdir}/%{name}/share/openmpi/*-wrapper-data.txt
 %{_libdir}/%{name}/share/openmpi/openmpi-valgrind.supp
+%{_libdir}/%{name}/share/pmix/
 %{_libdir}/pkgconfig/*.pc
 %{_fmoddir}/%{name}/
 %{rpmmacrodir}/macros.%{name_all}
@@ -211,6 +208,9 @@ make check
 %{_mandir}/%{name_all}/man*/*
 
 %changelog
+* Mon Jun 20 2022 wulei <wulei80@h-partners.com> - 4.1.4-1
+- Upgrade to 4.1.1
+
 * Thu Sep 9 2021 Pengju Jiang <jiangpengju2@huawei.com> - 2.1.1-20
 - solve the strip and rpath problem of safe conversion
 
