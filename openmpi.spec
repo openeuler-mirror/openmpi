@@ -1,10 +1,10 @@
 Name:           openmpi
 Version:        4.1.4
-Release:        1
+Release:        2
 Summary:        Open Source High Performance Computing
-License:        BSD and MIT and Romio
+License:        BSD-3-Clause
 URL:            http://www.open-mpi.org/
-Source0:        https://download.open-mpi.org/release/open-mpi/v2.1/openmpi-%{version}.tar.bz2
+Source0:        https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-%{version}.tar.bz2
 Source1:        openmpi.module.in
 Source2:        openmpi.pth.py3
 Source3:        macros.openmpi
@@ -15,7 +15,7 @@ BuildRequires:      libibverbs-devel >= 1.1.3, opensm-devel > 3.3.0
 BuildRequires:      librdmacm-devel, rdma-core-devel, pmix-devel
 BuildRequires:      hwloc-gui chrpath
 BuildRequires:      perl-generators, perl(Getopt::Long)
-BuildRequires:      python3-devel
+BuildRequires:      python3-devel libevent-devel
 %ifarch x86_64
 BuildRequires:      infinipath-psm-devel, libpsm2-devel zlib-devel
 %endif
@@ -82,6 +82,8 @@ This contains man files for the using of openmpi.
             --with-sge \
             --with-valgrind \
             --with-hwloc=/usr \
+            --with-pmix=external \
+            --with-libevent=external \
             --mandir=%{_mandir}/%{name_all} \
             CFLAGS="$RPM_OPT_FLAGS" \
             CXXFLAGS="$RPM_OPT_FLAGS" \
@@ -192,10 +194,8 @@ make check
 %{_libdir}/%{name}/lib/*.so
 %{_libdir}/%{name}/lib/*.mod
 %{_libdir}/%{name}/lib/pkgconfig/
-%{_libdir}/%{name}/lib/pmix/
 %{_libdir}/%{name}/share/openmpi/*-wrapper-data.txt
 %{_libdir}/%{name}/share/openmpi/openmpi-valgrind.supp
-%{_libdir}/%{name}/share/pmix/
 %{_libdir}/pkgconfig/*.pc
 %{_fmoddir}/%{name}/
 %{rpmmacrodir}/macros.%{name_all}
@@ -208,6 +208,9 @@ make check
 %{_mandir}/%{name_all}/man*/*
 
 %changelog
+* Fri Jul 29 2022 wangkai <wangkai385@h-partners.com> - 4.1.4-2
+- Reslove conflict with pmix-devel and update license
+
 * Mon Jun 20 2022 wulei <wulei80@h-partners.com> - 4.1.4-1
 - Upgrade to 4.1.1
 
